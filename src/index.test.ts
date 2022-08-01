@@ -1,9 +1,9 @@
 import { inspect } from 'node:util';
 
-import { type TypeOfString, is } from '.';
+import { is } from '.';
 
 describe('is', () => {
-  const isCases: [TypeOfString, any[], any[]][] = [
+  const isCases: [Parameters<typeof is>[0], any[], any[]][] = [
     ['string', ['test'], [new Object(''), 1, true, {}]],
     ['number', [1], [new Object(1), 1n, true, {}]],
     ['bigint', [1n], [new Object(1n), 1, true, {}]],

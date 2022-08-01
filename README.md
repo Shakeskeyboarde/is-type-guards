@@ -12,7 +12,7 @@ Minimal and composable [type guards](https://www.typescriptlang.org/docs/handboo
 ## Usage
 
 ```ts
-import { is, type InferGuardType } from 'is-guards';
+import { is } from 'is-guards';
 
 // Compose basic type guards into complex types.
 const isUser = is.object({
@@ -22,7 +22,7 @@ const isUser = is.object({
 });
 
 // Infer the Typescript type of the type guard.
-type User = InferGuardType<typeof isUser>;
+type User = is.infer<typeof isUser>;
 
 // Test if an unknown value matches the type.
 if (isUser(value)) {
