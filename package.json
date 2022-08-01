@@ -1,5 +1,4 @@
 {
-  "private": true,
   "name": "is-type-guards",
   "description": "Minimal and composable type guard (aka: type predicate) functions.",
   "author": {
