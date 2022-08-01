@@ -69,7 +69,7 @@ There are also 5 basic type guard functions (not factories).
 
 ## Custom type guards
 
-The factories above which accept type guard parameters will accept _any_ type guard, not just those included in this library.
+Custom type guard functions can be composed with this library as long as they guard their _first/only_ parameter.
 
 ```ts
 // A custom type guard function.

@@ -32,7 +32,9 @@ namespace is {
    * type User = is.infer<typeof isUser>;
    * ```
    */
-  export type infer<TTypeGuard> = TTypeGuard extends (value: unknown) => value is infer TType ? TType : never;
+  export type infer<TTypeGuard> = TTypeGuard extends (value: unknown, ...arg: unknown[]) => value is infer TType
+    ? TType
+    : never;
 }
 
 type TypeGuard<TType> = (value: unknown) => value is TType;
