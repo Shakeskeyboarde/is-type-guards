@@ -25,7 +25,7 @@
   "sideEffects": false,
   "scripts": {
     "test": "del-cli out && tsc --noEmit && eslint --max-warnings=0 src && jest --no-cache --passWithNoTests",
-    "prepublishOnly": "npm build",
+    "prepublishOnly": "npm run build",
     "build": "del-cli lib && tsc --project tsconfig.build-commonjs.json && tsc --project tsconfig.build-module.json && tsc --project tsconfig.build-types.json",
     "modernize": "npm-check-updates -u"
   },

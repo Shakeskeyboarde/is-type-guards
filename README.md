@@ -6,7 +6,7 @@ Minimal and composable [type guards](https://www.typescriptlang.org/docs/handboo
 - Composable with any type guard function.
 - Concise API designed to be intuitive through auto-completion.
 
-[![build](https://github.com/Shakeskeyboarde/is-type-guards/actions/workflows/tests.yml/badge.svg)](https://github.com/Shakeskeyboarde/is-type-guards/actions/workflows/build.yml)
+[![build](https://github.com/Shakeskeyboarde/is-type-guards/actions/workflows/build.yml/badge.svg)](https://github.com/Shakeskeyboarde/is-type-guards/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/Shakeskeyboarde/is-type-guards/branch/main/graph/badge.svg?token=E2VYI8XJLB)](https://codecov.io/gh/Shakeskeyboarde/is-type-guards)
 
 ## Usage
