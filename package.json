@@ -3,7 +3,7 @@
   "description": "Minimal and composable type guard (aka: type predicate) functions.",
   "author": "Chris Ackerman <chris@topher.land>",
   "license": "ISC",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "files": [
     "lib/**"
   ],

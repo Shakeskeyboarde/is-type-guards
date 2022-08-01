@@ -12,7 +12,7 @@ Minimal and composable [type guards](https://www.typescriptlang.org/docs/handboo
 ## Usage
 
 ```ts
-import { is } from 'is-guards';
+import { is } from 'is-type-guards';
 
 // Compose basic type guards into complex types.
 const isUser = is.object({

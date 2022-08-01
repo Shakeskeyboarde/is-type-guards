@@ -1,5 +1,6 @@
+/* eslint-disable functional/prefer-readonly-type */
 type Primitive = bigint | boolean | number | string | symbol | null | undefined;
-type Constructor = new (...args: readonly any[]) => unknown;
+type Constructor = new (...args: any[]) => unknown;
 type TypeOf = {
   readonly bigint: bigint;
   readonly boolean: boolean;
@@ -12,11 +13,11 @@ type TypeOf = {
 };
 type TypeOfString = keyof TypeOf;
 type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer V) => any ? V : never;
-type Simplify<T> = T extends Record<string, unknown> ? { readonly [P in keyof T]: T[P] } : T;
+type Simplify<T> = T extends Record<string, unknown> ? { [P in keyof T]: T[P] } : T;
 type SmartPartial<T> = Simplify<
   UnionToIntersection<
     {
-      readonly [P in keyof T]: undefined extends T[P] ? { readonly [K in P]?: T[P] } : { readonly [K in P]: T[P] };
+      [P in keyof T]: undefined extends T[P] ? { [K in P]?: T[P] } : { [K in P]: T[P] };
     }[keyof T]
   >
 >;
@@ -35,8 +36,8 @@ namespace is {
 }
 
 type TypeGuard<TType> = (value: unknown) => value is TType;
-type TypeGuardMap = Readonly<Record<any, TypeGuard<unknown>>>;
-type TypeGuardArray = readonly TypeGuard<unknown>[];
+type TypeGuardMap = Record<number | string | symbol, TypeGuard<unknown>>;
+type TypeGuardArray = TypeGuard<unknown>[];
 /**
  * @deprecated Use {@link is.infer} instead.
  */
@@ -45,33 +46,29 @@ type InferGuardType<TTypeGuard> = is.infer<TTypeGuard>;
 type TypeOfTypeGuard<TKey> = TypeGuard<TKey extends TypeOfString ? TypeOf[TKey] : never>;
 
 type InstanceOfTypeGuard<TConstructors> = TypeGuard<
-  TConstructors extends readonly (new (...args: readonly any[]) => infer TType)[] ? TType : never
+  TConstructors extends (new (...args: any[]) => infer TType)[] ? TType : never
 >;
 
-type ConstTypeGuard<TTypes> = TypeGuard<TTypes extends readonly (infer TType)[] ? TType : never>;
+type ConstTypeGuard<TTypes> = TypeGuard<TTypes extends (infer TType)[] ? TType : never>;
 
 type ObjectTypeGuard<TTypeGuards> = TypeGuard<
-  TTypeGuards extends TypeGuardMap
-    ? SmartPartial<{ readonly [P in keyof TTypeGuards]: is.infer<TTypeGuards[P]> }>
-    : never
+  TTypeGuards extends TypeGuardMap ? SmartPartial<{ [P in keyof TTypeGuards]: is.infer<TTypeGuards[P]> }> : never
 >;
 
 type RecordTypeGuard<TTypeGuards> = TypeGuard<
-  TTypeGuards extends readonly TypeGuard<infer TType>[] ? Readonly<Record<any, TType>> : never
+  TTypeGuards extends TypeGuard<infer TType>[] ? Record<number | string | symbol, TType> : never
 >;
 
 type TupleTypeGuard<TTypeGuards> = TypeGuard<
-  TTypeGuards extends TypeGuardArray ? { readonly [P in keyof TTypeGuards]: is.infer<TTypeGuards[P]> } : never
+  TTypeGuards extends TypeGuardArray ? { [P in keyof TTypeGuards]: is.infer<TTypeGuards[P]> } : never
 >;
 
-type ArrayTypeGuard<TTypeGuards> = TypeGuard<
-  TTypeGuards extends readonly TypeGuard<infer TType>[] ? readonly TType[] : never
->;
+type ArrayTypeGuard<TTypeGuards> = TypeGuard<TTypeGuards extends TypeGuard<infer TType>[] ? TType[] : never>;
 
-type UnionTypeGuard<TTypeGuards> = TypeGuard<TTypeGuards extends readonly TypeGuard<infer TType>[] ? TType : never>;
+type UnionTypeGuard<TTypeGuards> = TypeGuard<TTypeGuards extends TypeGuard<infer TType>[] ? TType : never>;
 
 type IntersectionTypeGuard<TTypeGuards> = TypeGuard<
-  TTypeGuards extends readonly TypeGuard<infer TType>[] ? UnionToIntersection<TType> : never
+  TTypeGuards extends TypeGuard<infer TType>[] ? UnionToIntersection<TType> : never
 >;
 
 /**
@@ -97,7 +94,7 @@ is.typeOf = <TTypeString extends TypeOfString>(typeString: TTypeString): TypeOfT
  * Returns a type guard which matches instances of any of the given
  * {@link constructors}.
  */
-is.instanceOf = <TConstructors extends readonly Constructor[]>(
+is.instanceOf = <TConstructors extends Constructor[]>(
   ...constructors: TConstructors
 ): InstanceOfTypeGuard<TConstructors> => {
   return (value): value is is.infer<InstanceOfTypeGuard<TConstructors>> => {
@@ -109,9 +106,7 @@ is.instanceOf = <TConstructors extends readonly Constructor[]>(
  * Returns a type guard which exactly matches (`===`) any of the given
  * {@link primitives}.
  */
-is.const = <TTypes extends readonly [Primitive, ...(readonly Primitive[])]>(
-  ...primitives: TTypes
-): ConstTypeGuard<TTypes> => {
+is.const = <TTypes extends [Primitive, ...Primitive[]]>(...primitives: TTypes): ConstTypeGuard<TTypes> => {
   return (value): value is is.infer<ConstTypeGuard<TTypes>> => {
     return primitives.some((primitive) => primitive === value);
   };
@@ -164,7 +159,7 @@ is.object = <TTypeGuards extends TypeGuardMap>(typeGuardMap: TTypeGuards): Objec
       value != null &&
       typeof value === 'object' &&
       Object.getOwnPropertyNames(typeGuardMap).every((key) => typeGuardMap[key](value[key])) &&
-      Object.getOwnPropertySymbols(typeGuardMap).every((key) => typeGuardMap[key as any](value[key]))
+      Object.getOwnPropertySymbols(typeGuardMap).every((key) => typeGuardMap[key](value[key]))
     );
   };
 };
