@@ -160,8 +160,8 @@ is.object = <TTypeGuards extends TypeGuardMap>(typeGuardMap: TTypeGuards): Objec
     return (
       value != null &&
       typeof value === 'object' &&
-      Object.getOwnPropertyNames(typeGuardMap).every((key) => typeGuardMap[key](value[key])) &&
-      Object.getOwnPropertySymbols(typeGuardMap).every((key) => typeGuardMap[key](value[key]))
+      Object.getOwnPropertyNames(typeGuardMap).every((key) => typeGuardMap[key]?.(value[key])) &&
+      Object.getOwnPropertySymbols(typeGuardMap).every((key) => typeGuardMap[key]?.(value[key]))
     );
   };
 };
@@ -228,14 +228,14 @@ is.nil = is.nullish;
 /**
  * Matches anything (typed as `unknown`).
  */
-is.unknown = (value: unknown): value is unknown => {
+is.unknown = (_value: unknown): _value is unknown => {
   return true;
 };
 
 /**
  * Matches anything (typed as `any`).
  */
-is.any = (value: unknown): value is any => {
+is.any = (_value: unknown): _value is any => {
   return true;
 };
 

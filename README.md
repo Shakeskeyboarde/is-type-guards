@@ -37,6 +37,7 @@ There are 9 type guard _factories_. These factories return new type guard functi
 
 - `is(typeString)` (alias: `is.typeOf`)
   -  Returns a type guard which matches values that produce the given `typeString` when passed to the [`typeof`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/typeof#description) operator.
+  - Valid type strings: `string`, `number`, `bigint`, `boolean`, `symbol`, `object`, `function`, `undefined`
 - `is.instanceOf(...constructors)`
   - Returns a type guard which matches instances of any of the given `constructors` using the `instanceof` operator.
 - `is.const(...primitives)` (alias: `is.enum`)
@@ -54,7 +55,15 @@ There are 9 type guard _factories_. These factories return new type guard functi
 - `is.union(...typeGuards)`
   - Returns a type guard which matches any of the given `typeGuards`.
 
-There are also 5 basic type guard functions (not factories).
+These factories are not type guards themselves. They _return_ type guards. To use the returned type guard without assigning it to a variable, use two sets of parentheses: one to create the type guard function, and the second to call it with a test value.
+
+```ts
+is('number')(value);
+is.const('a', 'b', 'c')(value);
+is.array(is('string'))(value);
+```
+
+There are also 5 simple type guard functions (not factories).
 
 - `is.null`
   - Matches `null`.

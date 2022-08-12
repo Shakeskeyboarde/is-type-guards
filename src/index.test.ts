@@ -1,6 +1,6 @@
 import { inspect } from 'node:util';
 
-import { is } from '.';
+import { is } from './index.js';
 
 describe('is', () => {
   const isCases: [Parameters<typeof is>[0], any[], any[]][] = [
